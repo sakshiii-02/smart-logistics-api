@@ -38,7 +38,7 @@ const router = express.Router();
 
 const{getAllShipments,createShipment} = require("../controller/shipmentController");
 
-router.get("/shipments", getAllShipments);
+router.get("/getAllshipments", getAllShipments);
 router.post("/addNewShipment", createShipment);
 
 module.exports = router;
