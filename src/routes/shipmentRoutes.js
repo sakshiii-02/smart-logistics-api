@@ -2,6 +2,19 @@ const express = require("express");
 
 const router = express.Router();
 
+const {
+    getAllShipments,
+    createShipment,
+    getShipmentById,
+    updateShipmentStatus,
+} = require("../controller/shipmentController");
+
+const validateRequest = require("../middleware/validateRequest");
+
+const { shipmentIdParamsSchema, createShipmentBodySchema, updateStatusBodySchema, shipmentListQuerySchema } = require("../validator/shipmentValidator");
+
+
+
 // let shipments = [
 //     {
 //         id: 1,
@@ -36,9 +49,7 @@ const router = express.Router();
 //     })
 // })
 
-const{getAllShipments,createShipment} = require("../controller/shipmentController");
-
-router.get("/getAllshipments", getAllShipments);
-router.post("/addNewShipment", createShipment);
+router.get("/getAllshipments", validateRequest({ query: shipmentListQuerySchema }), getAllShipments);
+router.post("/addNewShipment", validateRequest({ body: createShipmentBodySchema }), createShipment);
 
 module.exports = router;

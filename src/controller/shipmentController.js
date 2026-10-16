@@ -1,9 +1,10 @@
-const { errorMessages } = require("vue/compiler-sfc");
 const shipmentModel = require("../models/shipmentModel");
 
 const getAllShipments = async(req, res) => {
     try {
-        const shipments = await shipmentModel.getAllShipments();
+        const { page, limit, search, status } = req.validated.query;
+
+        const shipments = await shipmentModel.getAllShipments({ page, limit, search, status });
 
         return res.status(200).json({
             success: true,

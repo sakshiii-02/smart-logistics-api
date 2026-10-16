@@ -1,6 +1,19 @@
 const db = require("../db");
 
-const getAllShipments = async () => {
+const getAllShipments = async ({ page, limit, search, status }) => {
+    let conditions = [];
+    
+    if(search) {
+        conditions.push(`(tracking_number ILIKE '%${search}%') or (customer_name ILIKE '%${search}%')`);
+    }
+
+    if(status) {
+        conditions.push(`status = '${status}'`);
+    }
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+
+    let pagination = '';
+    pagination = `LIMIT ${limit} OFFSET ${(page - 1) * limit}`;
     const query = `
         SELECT
             id,
@@ -9,7 +22,9 @@ const getAllShipments = async () => {
             status,
             created_at AS "createdAt"
         FROM shipments
-        ORDER BY id DESC
+        ${whereClause}
+        ORDER BY id DESC 
+        ${pagination}
     `;
 
     const result = await db.query(query);
