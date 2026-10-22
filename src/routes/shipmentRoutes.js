@@ -2,6 +2,9 @@ const express = require("express");
 
 const router = express.Router();
 
+const authenticateToken = require("../middleware/authenticateToken");
+router.use(authenticateToken);
+
 const {
     getAllShipments,
     createShipment,
@@ -12,8 +15,6 @@ const {
 const validateRequest = require("../middleware/validateRequest");
 
 const { shipmentIdParamsSchema, createShipmentBodySchema, updateStatusBodySchema, shipmentListQuerySchema } = require("../validator/shipmentValidator");
-
-
 
 // let shipments = [
 //     {
@@ -49,7 +50,7 @@ const { shipmentIdParamsSchema, createShipmentBodySchema, updateStatusBodySchema
 //     })
 // })
 
-router.get("/getAllshipments", validateRequest({ query: shipmentListQuerySchema }), getAllShipments);
-router.post("/addNewShipment", validateRequest({ body: createShipmentBodySchema }), createShipment);
+router.get("/getAllshipments", authenticateToken, validateRequest({ query: shipmentListQuerySchema }), getAllShipments);
+router.post("/addNewShipment", authenticateToken,validateRequest({ body: createShipmentBodySchema }), createShipment);
 
 module.exports = router;

@@ -12,7 +12,9 @@ app.get("/check",(req, res) => {
     })
 });
 
+app.use('/api/auth', require('./routes/userRoutes'));
 app.use('/api', require('./routes/shipmentRoutes'));
+
 app.use(errorHandler);
 
 module.exports = app;
