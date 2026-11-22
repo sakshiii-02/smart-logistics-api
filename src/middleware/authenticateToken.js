@@ -10,8 +10,8 @@ const authenticateToken = (req, res, next) => {
                 message: "Authorization header is missing"
             });
         }
-
-        const token = authHeader.split(" ")[1];
+        
+        const token = authHeader
 
         if(!token){
             return res.status(401).json({
